@@ -9,7 +9,7 @@ import { SUBJECTS } from "@/lib/subjects";
 import { suggestedPoints } from "@/lib/points";
 import type { Material, User } from "@/generated/prisma/client";
 
-export const UPLOADS_ROOT = path.join(process.cwd(), "uploads");
+export const UPLOADS_ROOT = path.join(process.cwd(), "storage", "uploads");
 
 async function ensureUploadsDir() {
   await fs.mkdir(UPLOADS_ROOT, { recursive: true });

@@ -5,7 +5,7 @@ const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
 function createClient() {
   const adapter = new PrismaBetterSqlite3({
-    url: process.env.DATABASE_URL ?? "file:./data/dshs-share.db",
+    url: process.env.DATABASE_URL ?? "file:./storage/data/dshs-share.db",
   });
   return new PrismaClient({ adapter });
 }

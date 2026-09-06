@@ -45,7 +45,10 @@ next-env.d.ts
 /src/generated/prisma
 
 # sqlite database + uploaded materials (never commit real data)
-/data/*
-!/data/.gitkeep
-/uploads/*
-!/uploads/.gitkeep
+/storage/*
+!/storage/data/
+!/storage/uploads/
+/storage/data/*
+!/storage/data/.gitkeep
+/storage/uploads/*
+!/storage/uploads/.gitkeep
