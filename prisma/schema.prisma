@@ -1,0 +1,110 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum Role {
+  student
+  admin
+}
+
+enum UserStatus {
+  active
+  suspended
+}
+
+enum MaterialStatus {
+  pending
+  approved
+  rejected
+}
+
+model User {
+  id            Int      @id @default(autoincrement())
+  email         String   @unique
+  name          String
+  passwordHash  String
+  passwordSalt  String
+  role          Role     @default(student)
+  points        Int      @default(0)
+  status        UserStatus @default(active)
+  createdAt     DateTime @default(now())
+
+  sessions            Session[]
+  materials           Material[]        @relation("UploadedMaterials")
+  purchases           Purchase[]
+  pointTransactions   PointTransaction[]
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model Material {
+  id            Int      @id @default(autoincrement())
+  title         String
+  subject       String
+  unitCount     Int
+  sourceAcademy String
+  description   String
+  fileName      String
+  filePath      String
+  fileSize      Int
+  status        MaterialStatus @default(pending)
+  pointCost     Int?
+  rewardPoints  Int?
+  rejectReason  String?
+  uploaderId    Int
+  uploader      User     @relation("UploadedMaterials", fields: [uploaderId], references: [id], onDelete: Cascade)
+  createdAt     DateTime @default(now())
+  approvedAt    DateTime?
+
+  purchases         Purchase[]
+  pointTransactions PointTransaction[]
+
+  @@index([status])
+  @@index([subject])
+  @@map("materials")
+}
+
+model Purchase {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  materialId  Int
+  material    Material @relation(fields: [materialId], references: [id], onDelete: Cascade)
+  pointsPaid  Int
+  createdAt   DateTime @default(now())
+
+  @@unique([userId, materialId])
+  @@index([userId])
+  @@map("purchases")
+}
+
+model PointTransaction {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amount        Int
+  reason        String
+  refMaterialId Int?
+  refMaterial   Material? @relation(fields: [refMaterialId], references: [id], onDelete: SetNull)
+  memo          String?
+  createdAt     DateTime @default(now())
+
+  @@index([userId])
+  @@map("point_transactions")
+}
