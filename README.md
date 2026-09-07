@@ -54,6 +54,8 @@ npm run dev
 
 저장소 루트의 `render.yaml`이 서비스/영구 디스크/환경변수를 대부분 자동으로 설정합니다.
 
+> **Render 무료(Free) 플랜은 영구 디스크를 지원하지 않습니다.** 이 앱은 SQLite 파일과 업로드 파일을 디스크에 저장하는 구조라 무료 플랜에서는 재시작할 때마다 데이터가 사라집니다. `render.yaml`은 **Starter 플랜(월 $7)** 을 사용하도록 설정되어 있으며, 결제 수단(신용/체크카드) 등록이 필요합니다.
+
 1. [render.com](https://render.com)에 가입/로그인 (GitHub 계정으로 로그인하면 편함)
 2. 대시보드에서 **New +** → **Blueprint** 선택
 3. 이 프로젝트가 올라간 GitHub 저장소를 연결 (Render의 GitHub App 권한 승인 필요)
